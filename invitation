@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Қыз Ұзату | Дана</title>
+    <!-- Подключение элегантных шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b291b; /* Глубокий изумрудный */
+            --gold: #d4af37;     /* Благородное золото */
+            --gold-light: #f3e5ab;
+            --text-light: #ffffff;
+            --text-muted: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Декоративные казахские узоры по углам (SVG) */
+        .ornament-corner {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            z-index: 10;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .top-left { top: 15px; left: 15px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+        .top-right { top: 15px; right: 15px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+        .bottom-left { bottom: 15px; left: 15px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+        .bottom-right { bottom: 15px; right: 15px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+
+        /* Элемент казахского узора в виде линии */
+        .pattern-divider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            width: 150px;
+        }
+        .pattern-divider svg {
+            fill: var(--gold);
+            width: 100%;
+            height: auto;
+        }
+
+        /* Общие стили секций */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 60px 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Анимация плавного появления */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Секция 1: Главный экран */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            color: var(--text-light);
+            text-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .hero-date {
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
+            padding: 10px 30px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        /* Секция 2: Приглашение */
+        .invitation-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+        
+        .parents-names {
+            font-size: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 1px;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        /* Секция 3: Таймер */
+        .timer-title {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 30px;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: space-around;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 15px 10px;
+            border-radius: 4px;
+            width: 75px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .countdown-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            font-weight: 600;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        /* Секция 4: Детали (Время и Место) */
+        .details-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            padding: 40px 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .details-item {
+            margin-bottom: 35px;
+        }
+        .details-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .details-icon {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .details-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .details-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+        }
+
+        /* Секция 5: RSVP Форма */
+        .rsvp-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 400px;
+            margin: 30px auto 0 auto;
+        }
+
+        .input-group {
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .rsvp-input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 4px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .rsvp-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .radio-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .radio-label input {
+            accent-color: var(--gold);
+            width: 18px;
+            height: 18px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #d4af37, #aa841b);
+            color: #000;
+            border: none;
+            padding: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Адаптивность для мобильных */
+        @media (max-width: 480px) {
+            .hero-title { font-size: 3rem; }
+            .container { padding: 45px 20px; }
+            .countdown-item { width: 68px; padding: 12px 5px; }
+            .countdown-number { font-size: 1.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Декоративные рамки по углам -->
+    <div class="ornament-corner top-left"></div>
+    <div class="ornament-corner top-right"></div>
+    <div class="ornament-corner bottom-left"></div>
+    <div class="ornament-corner bottom-right"></div>
+
+    <!-- СЕКЦИЯ 1: Главная -->
+    <section class="container hero-section">
+        <p class="hero-subtitle">Қыз Ұзату</p>
+        
+        <!-- Векторный национальный узор-разделитель -->
+        <div class="pattern-divider">
+            <svg viewBox="0 0 100 20">
+                <path d="M10,10 Q25,0 40,10 T70,10 T100,10 M40,10 Q50,20 60,10" fill="none" stroke="#d4af37" stroke-width="2"/>
+                <circle cx="50" cy="10" r="3" />
+            </svg>
+        </div>
+
+        <h1 class="hero-title">Дана</h1>
+        
+        <p class="hero-date">27.06.2026</p>
+    </section>
+
+    <!-- СЕКЦИЯ 2: Приглашение -->
+    <section class="container fade-in">
+        <p class="hero-subtitle">Құрметті қонақтар!</p>
+        <p class="invitation-text">
+            Аялап өсірген қызымыз Дананы қияға қондыру салтанатына арналған ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!
+        </p>
+        <p class="hero-subtitle" style="font-size: 0.9rem; margin-top: 40px;">Той иелері:</p>
+        <p class="parents-names">Руслан - Елена</p>
+    </section>
+
+    <!-- СЕКЦИЯ 3: Детали салтаната -->
+    <section class="container fade-in">
+        <div class="details-card">
+            <div class="details-item">
+                <div class="details-icon">📅</div>
+                <p class="details-label">Күн парағы</p>
+                <p class="details-value">27 маусым 2026 жыл</p>
+            </div>
+            
+            <div class="details-item">
+                <div class="details-icon">⏰</div>
+                <p class="details-label">Басталуы</p>
+                <p class="details-value">Сағат 16:00-де</p>
+            </div>
+
+            <div class="details-item">
+                <div class="details-icon">📍</div>
+                <p class="details-label">Мекен-жайы</p>
+                <p class="details-value">Бастау ауылы</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ 4: Таймер -->
+    <section class="container fade-in">
+        <h2 class="timer-title">Салтанатқа дейін қалды:</h2>
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">00</span>
+                <span class="countdown-label">Күн</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">00</span>
+                <span class="countdown-label">Сағат</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutes">00</span>
+                <span class="countdown-label">Мнут</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="seconds">00</span>
+                <span class="countdown-label">Секунд</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ 5: RSVP Форма -->
+    <section class="container fade-in" style="padding-bottom: 100px;">
+        <p class="hero-subtitle">Тойға келетініңізді растауыңызды сұраймыз</p>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Жауабыңыз тікелей WhatsApp-қа жолданады</p>
+        
+        <form class="rsvp-form" id="rsvpForm">
+            <div class="input-group">
+                <label for="guestName">Сіздің есіміңіз (Аты-жөніңіз)</label>
+                <input type="text" id="guestName" class="rsvp-input" placeholder="Есіміңізді жазыңыз..." required>
+            </div>
+
+            <div class="input-group">
+                <label>Тойға келесіз бе?</label>
+                <div class="radio-container">
+                    <label class="radio-label">
+                        <input type="radio" name="attendance" value="Келемін" checked>
+                        Өкінішке орай, келе алмаймын
+                    </label>
+                </div>
+                <div class="radio-container" style="margin-top: 10px;">
+                    <label class="radio-label">
+                        <input type="radio" name="attendance" value="Келе алмаймын">
+                        Өкінішке орай, келе алмаймын
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Жауапты жіберу</button>
+        </form>
+    </section>
+
+    <script>
+        // --- 1. ТАЙМЕР ОБРАТНОГО ОТСЧЕТА ---
+        const targetDate = new Date('June 27, 2026 16:00:00').getTime();
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                document.getElementById('countdown').innerHTML = "<p style='color: var(--gold); font-size: 1.2rem;'>Салтанат басталды!</p>";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+            document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+
+        // --- 2. АНИМАЦИЯ ПОЯВЛЕНИЯ ЭЛЕМЕНТОВ ПРИ СКРОЛЛЕ ---
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const observerOptions = {
+            root: null,
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        fadeElements.forEach(el => observer.observe(el));
+
+
+        // --- 3. ИНТЕГРАЦИЯ RSVP ФОРМЫ С WHATSAPP ---
+        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // ВАЖНО: Замените номер ниже на свой (в международном формате, без плюса)
+            const phoneNumber = "77071234567"; 
+            
+            const name = document.getElementById('guestName').value;
+            const attendance = document.querySelector('input[name="attendance"]:checked').value;
+            
+            // Формируем красивый текст сообщения
+            let text = `Сәлеметсіз бе! %0A%0AҚыз ұзату шақыруына жауап:%0A`;
+            text += `*Қонақ:* ${name}%0A`;
+            text += `*Жауап:* ${attendance === 'Келемін' ? '✅ Тойға қуанышты болып КЕЛЕМІН!' : '❌ Өкінішке орай, КЕЛЕ АЛМАЙМЫН.'}`;
+            
+            // Ссылка для открытия WhatsApp
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${text}`;
+            
+            // Открываем WhatsApp в новой вкладке
+            window.open(whatsappUrl, '_blank');
+        });
+    </script>
+</body>
+</html>
