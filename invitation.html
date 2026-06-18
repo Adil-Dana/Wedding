@@ -110,8 +110,7 @@
         .letter-inside h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--gold); font-style: italic; }
         .letter-inside p { font-size: 0.75rem; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; margin-top: 5px; }
 
-        /* Сургучная печать / Кнопка штампа */
-        /* СУРГУЧНАЯ ПЕЧАТЬ С ВАШЕЙ КАРТИНКОЙ */
+        /* СУРГУЧНАЯ ПЕЧАТЬ С КАРТИНКОЙ */
         .wax-seal {
             position: absolute;
             top: 95px; left: 50%; transform: translateX(-50%);
@@ -122,15 +121,13 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.4), inset 0 0 4px rgba(0,0,0,0.5);
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.4s ease, opacity 0.3s ease;
-            padding: 2px; /* Небольшой отступ, чтобы картинка не упиралась в края */
+            padding: 2px;
         }
 
-        /* Стилизация самой картинки внутри печати */
         .wax-seal img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            /* Эффект легкого тиснения, чтобы картинка сливалась с сургучом */
             filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3)); 
         }
 
@@ -263,7 +260,6 @@
 </head>
 <body>
 
-    <!-- 3D ЭКРАН С ЭФФЕКТОМ НАСТОЯЩЕГО КОНВЕРТА -->
     <div id="envelope-container">
         <div class="envelope-wrapper" id="envelope" onclick="openEnvelopeAnimation()">
             <div class="envelope-flap"></div>
@@ -273,37 +269,30 @@
                 <p>Үйлену тойға шақыру</p>
             </div>
             <div class="wax-seal">
-    <img src="AD_init.png" alt="Инициалы">
-</div>
+                <img src="AD_init.png" alt="Инициалы">
+            </div>
         </div>
         <button class="env-open-text-btn" id="t-open-hint" onclick="openEnvelopeAnimation()">Ашу / Открыть</button>
     </div>
 
-    <!-- ОСНОВНОЙ САЙТ (ОТКРЫВАЕТСЯ ПОСЛЕ КОНВЕРТА) -->
     <div id="main-content">
         
-        <!-- Фоновое аудио (можно заменить ссылку на свою mp3) -->
         <audio id="bgMusic" loop preload="auto">
             <source src="https://fine.sunproxy.net/file/bkRXSVJLRVc1cndvMXV3SGNiSDA0TmtPc3cvcmtsR2w2bmhSbThrR1d4MXNFTU1kWjM1V3U3eEkxMm5ock9HekFndFZvZGFEeXJIVTh1MW5pQjJJblBqUzAvOFlmQkxTMFdjdkk3TFB5YTA9/lana_Del_Rey_-_Young_and_Beautiful_svadebnaya_(SkySound.cc).mp3" type="audio/mpeg">
         </audio>
 
-        <!-- Кнопка музыки ближе к центру -->
         <div class="music-control" id="musicBtn" onclick="toggleMusic()">
             <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
         </div>
 
-        <!-- Тонкие Рамки -->
         <div class="ornament-corner top-left"></div><div class="ornament-corner top-right"></div>
         <div class="ornament-corner bottom-left"></div><div class="ornament-corner bottom-right"></div>
 
-        <!-- Переключатель языка -->
         <div class="top-controls">
             <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">Русский</button>
         </div>
 
-        <!-- Секция 1: Приветствие -->
         <section class="container hero-section">
-            <!-- Прозрачные нежные цветы -->
             <img src="https://cdn-icons-png.flaticon.com/512/1043/1043425.png" class="flower-decor" style="top: 12%; left: 6%; transform: rotate(-25deg);" alt="">
             
             <p class="hero-subtitle" id="t-main-sub">Үйлену той</p>
@@ -317,7 +306,6 @@
             <p class="hero-date">22.08.2026</p>
         </section>
 
-        <!-- Секция 2: Текст приглашения -->
         <section class="container fade-in">
             <p class="hero-subtitle" id="t-inv-dear">Шақыру хат!</p>
             <p class="invitation-text" id="t-inv-text">
@@ -327,7 +315,6 @@
             <p class="parents-names">Мақсұт - Кенжегүль</p>
         </section>
 
-        <!-- Секция 3: Дата и Карта -->
         <section class="container fade-in">
             <img src="https://cdn-icons-png.flaticon.com/128/531/531864.png" class="flower-decor" style="right: 6%; top: 40%; transform: scaleX(-1) rotate(-30deg);" alt="">
             
@@ -347,7 +334,7 @@
                 <div class="details-item">
                     <div class="details-icon">📍</div>
                     <p class="details-label" id="t-det-loc-lbl">Мекен-жайы</p>
-                    <p class="details-value" id="t-det-loc-val">Бастау ауылы</p>
+                    <p class="details-value" id="t-det-loc-val">Павлодар қаласы, банкет залы "Салтанат сарайы"</p>
                     <a href="https://go.2gis.com/ngbKk" target="_blank" class="map-btn" id="t-map-btn">
                         🗺️ <span id="t-map-btn-txt">Картаны ашу</span>
                     </a>
@@ -355,18 +342,16 @@
             </div>
         </section>
 
-        <!-- Секция 4: Обратный отсчет -->
         <section class="container fade-in">
             <h2 class="timer-title" id="t-timer-title">Салтанатқа дейін қалды:</h2>
             <div class="countdown" id="countdown">
                 <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label" id="lbl-days">Күн</span></div>
                 <div class="countdown-item"><span class="countdown-number" id="hours">00</span><span class="countdown-label" id="lbl-hours">Сағат</span></div>
-                <div class="countdown-item"><span class="countdown-number" id="minutes">00</span><span class="countdown-label" id="lbl-mins">Мнут</span></div>
+                <div class="countdown-item"><span class="countdown-number" id="minutes">00</span><span class="countdown-label" id="lbl-mins">Минут</span></div>
                 <div class="countdown-item"><span class="countdown-number" id="seconds">00</span><span class="countdown-label" id="lbl-secs">Секунд</span></div>
             </div>
         </section>
 
-        <!-- Секция 5: RSVP форма подтверждения -->
         <section class="container fade-in" style="padding-bottom: 120px;">
             <p class="hero-subtitle" id="t-rsvp-title">Тойға келетініңізді растауыңызды сұраймыз</p>
             <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;" id="t-rsvp-sub">Жауабыңыз тікелей WhatsApp-қа жолданады</p>
@@ -403,10 +388,8 @@
             const container = document.getElementById('envelope-container');
             const mainContent = document.getElementById('main-content');
 
-            // Расскрываем конверт и достаем письмо
             envelope.classList.add('open');
 
-            // Через 1.5 секунды, когда письмо выехало, растворяем весь preloader экран
             setTimeout(() => {
                 container.style.opacity = '0';
                 container.style.transform = 'scale(0.95)';
@@ -416,22 +399,18 @@
                     container.style.display = 'none';
                     mainContent.style.opacity = '1';
                     document.querySelector('.hero-section').classList.add('visible');
-                    playMusic(); // Музыка запускается автоматически!
+                    playMusic();
                     startAutoScroll();
                 }, 1000);
             }, 1600);
         }
-function startAutoScroll() {
-            // Задержка 3 секунды, чтобы гость успел рассмотреть первый экран
+
+        function startAutoScroll() {
             setTimeout(() => {
-                const scrollSpeed = 1; // Скорость: чем больше цифра, тем быстрее бежит экран
-                
+                const scrollSpeed = 1;
                 const scrollInterval = setInterval(() => {
-                    // Прокручиваем страницу на 1 пиксель вниз
                     window.scrollBy(0, scrollSpeed);
                     
-                    // Если гость сам коснулся экрана (крутанул пальцем), останавливаем автоскролл
-                    // чтобы не мешать ему читать в его темпе
                     window.addEventListener('touchstart', () => {
                         clearInterval(scrollInterval);
                     }, { once: true });
@@ -440,13 +419,13 @@ function startAutoScroll() {
                         clearInterval(scrollInterval);
                     }, { once: true });
 
-                    // Если дошли до самого низа страницы — останавливаемся
                     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
                         clearInterval(scrollInterval);
                     }
-                }, 30); // Интервал обновления (30 миллисекунд для плавной картинки)
+                }, 30);
             }, 3000); 
         }
+
         // МУЗЫКАЛЬНЫЙ ПЛЕЕР
         const music = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
@@ -475,12 +454,10 @@ function startAutoScroll() {
         const langData = {
             kk: {
                 langBtn: "Русский", mainSub: "Үйлену той", invDear: "Құрметті қонақтар!",
-                invText: "Құрметті ағайын-туыс, бауырлар және достар!
-
-Екі жүректің үндескен, екі тағдырдың тоғысқан сәтіне куә болып, өміріміздің ең маңызды күнін бізбен бірге бөлісуге шақырамыз. Ақ дастарханымыздың сыйлы қонағы болыңыздар!",
+                invText: "Құрметті ағайын-туыс, бауырлар және достар!\n\nЕкі жүректің үндескен, екі тағдырдың тоғысқан сәтіне куә болып, өміріміздің ең маңызды күнін бізбен бірге бөлісуге шақырамыз. Ақ дастарханымыздың сыйлы қонағы болыңыздар!",
                 hosts: "Той иелері:", detDateLbl: "Күн парағы", detDateVal: "22 тамыз 2026 жыл",
                 detTimeLbl: "Басталуы", detTimeVal: "Сағат 16:00-де", detLocLbl: "Мекен-жайы",
-                detLocVal: "Павлодар қаласы, банкет залы `Салтанат сарайы`", mapBtn: "Картаны ашу", timerTitle: "Салтанатқа дейін қалды:",
+                detLocVal: "Павлодар қаласы, банкет залы \"Салтанат сарайы\"", mapBtn: "Картаны ашу", timerTitle: "Салтанатқа дейін қалды:",
                 lblDays: "Күн", lblHours: "Сағат", lblMins: "Минут", lblSecs: "Секунд",
                 rsvpTitle: "Тойға келетініңізді растауыңызды сұраймыз", rsvpSub: "Жауабыңыз тікелей WhatsApp-қа жолданады",
                 inputLbl: "Сіздің есіміңіз (Аты-жөніңіз)", radioMainLbl: "Тойға келесіз бе?",
@@ -488,12 +465,10 @@ function startAutoScroll() {
             },
             ru: {
                 langBtn: "Қазақша", mainSub: "Свадьба", invDear: "Дорогие гости!",
-                invText: "Дорогие родные и друзья!
-
-В нашей жизни наступает особенный момент, когда две судьбы соединяются в одну. Мы будем счастливы видеть вас на празднике нашей любви и верности, в день нашей свадьбы!",
+                invText: "Дорогие родные и друзья!\n\nВ нашей жизни наступает особенный момент, когда две судьбы соединяются в одну. Мы будем счастливы видеть вас на празднике нашей любви и верности, в день нашей свадьбы!",
                 hosts: "Хозяева торжества:", detDateLbl: "Дата", detDateVal: "22 августа 2026 года",
                 detTimeLbl: "Время", detTimeVal: "В 16:00 ч.", detLocLbl: "Место проведения",
-                detLocVal: "город Павлодар, банкетный зал `Салтанат сарайы`", mapBtn: "Открыть карту", timerTitle: "До торжества осталось:",
+                detLocVal: "город Павлодар, банкетный зал \"Салтанат сарайы\"", mapBtn: "Открыть карту", timerTitle: "До торжества осталось:",
                 lblDays: "Дней", lblHours: "Часов", lblMins: "Минут", lblSecs: "Секунд",
                 rsvpTitle: "Пожалуйста, подтвердите ваше присутствие", rsvpSub: "Ваш ответ будет отправлен напрямую в WhatsApp",
                 inputLbl: "Ваше имя и фамилия", radioMainLbl: "Придете ли вы на торжество?",
@@ -558,14 +533,14 @@ function startAutoScroll() {
         // ИНТЕГРАЦИЯ RSVP С WHATSAPP
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const phoneNumber = "+77774984504"; // Напишите сюда свой номер телефона
+            const phoneNumber = "+77774984504";
             const name = document.getElementById('guestName').value;
             const attendance = document.querySelector('input[name="attendance"]:checked').value;
             let text = "";
             if(currentLang === 'kk') {
-                text = `Сәлеметсіз бе! %0A%0AҚыз ұзату шақыруына жауап:%0A*Қонақ:* ${name}%0A*Жауап:* ${attendance === 'yes' ? '✅ КЕЛЕМІН!' : '❌ КЕЛЕ АЛМАЙМЫН.'}`;
+                text = `Сәлеметсіз бе! %0A%0AҮйлену той шақыруына жауап:%0A*Қонақ:* ${name}%0A*Жауап:* ${attendance === 'yes' ? '✅ КЕЛЕМІН!' : '❌ КЕЛЕ АЛМАЙМЫН.'}`;
             } else {
-                text = `Здравствуйте! %0A%0AОтвет на приглашение Кыз узату:%0A*Гость:* ${name}%0A*Ответ:* ${attendance === 'yes' ? '✅ ПРИДУ!' : '❌ НЕ СМОГУ.'}`;
+                text = `Здравствуйте! %0A%0AОтвет на приглашение на свадьбу:%0A*Гость:* ${name}%0A*Ответ:* ${attendance === 'yes' ? '✅ ПРИДУ!' : '❌ НЕ СМОГУ.'}`;
             }
             window.open(`https://api.whatsapp.com/send?phone=${phoneNumber}&text=${text}`, '_blank');
         });
