@@ -6,7 +6,7 @@
     <title>Қыз Ұзату | Дана</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -27,40 +27,143 @@
             line-height: 1.6;
         }
 
-        /* Угловые орнаменты */
-        .ornament-corner {
+        /* ЭКРАН-КОНВЕРТ (PRELOADER) */
+        #envelope-overlay {
             position: fixed;
-            width: 80px;
-            height: 80px;
-            z-index: 10;
-            opacity: 0.5;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease, transform 1s ease;
+            padding: 20px;
+        }
+
+        /* Задний цветочный фон для конверта */
+        #envelope-overlay::before, body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=1000&auto=format&fit=crop'); /* Элегантный силуэт цветов */
+            background-size: cover;
+            background-position: center;
+            opacity: 0.05; /* Едва заметный, дорогой паттерн */
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .envelope-card {
+            border: 1px solid var(--gold);
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            background: rgba(11, 41, 27, 0.9);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+            border-radius: 4px;
+        }
+
+        .envelope-card::after {
+            content: "";
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
             pointer-events: none;
         }
-        .top-left { top: 15px; left: 15px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
-        .top-right { top: 15px; right: 15px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
-        .bottom-left { bottom: 15px; left: 15px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
-        .bottom-right { bottom: 15px; right: 15px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+
+        .open-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 14px 28px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 30px;
+            font-weight: 600;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+        }
+        .open-btn:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        /* ОСНОВНОЙ КОНТЕНТ (СКРЫТ ДО ОТКРЫТИЯ) */
+        #main-content {
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            display: none;
+        }
+
+        /* ФИКСИРОВАННАЯ КНОПКА МУЗЫКИ (БЛИЖЕ К ЦЕНТРУ) */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 15%; /* Сдвинута ближе к центру от края */
+            z-index: 1000;
+            background: rgba(11, 41, 27, 0.9);
+            border: 1px solid var(--gold);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .music-control svg { width: 20px; height: 20px; fill: var(--gold); }
+        .music-on { animation: spin 4s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Растительные узоры по бокам страниц */
+        .flower-decor {
+            position: absolute;
+            width: 60px;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        /* Угловые рамки */
+        .ornament-corner {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            z-index: 10;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .top-left { top: 15px; left: 15px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+        .top-right { top: 15px; right: 15px; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+        .bottom-left { bottom: 15px; left: 15px; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+        .bottom-right { bottom: 15px; right: 15px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
 
         .pattern-divider {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 20px auto;
-            width: 150px;
+            margin: 25px auto;
+            width: 120px;
         }
         .pattern-divider svg { fill: var(--gold); width: 100%; height: auto; }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 50px 25px;
+            padding: 60px 25px;
             text-align: center;
             position: relative;
         }
 
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(20px);
             transition: opacity 1s ease, transform 1s ease;
         }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
@@ -74,53 +177,17 @@
             z-index: 100;
         }
         .lang-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--gold);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.5);
             color: var(--text-light);
-            padding: 6px 16px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 500;
+            padding: 6px 14px;
+            font-size: 0.75rem;
             cursor: pointer;
             border-radius: 20px;
             transition: all 0.3s;
             letter-spacing: 1px;
         }
-        .lang-btn:hover {
-            background: var(--gold);
-            color: #000;
-        }
-
-        /* ФИКСИРОВАННАЯ КНОПКА МУЗЫКИ */
-        .music-control {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 1000;
-            background: rgba(11, 41, 27, 0.85);
-            border: 2px solid var(--gold);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            animation: pulse 2s infinite;
-        }
-        .music-control svg {
-            width: 22px;
-            height: 22px;
-            fill: var(--gold);
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-            70% { box-shadow: 0 0 0 12px rgba(212, 175, 55, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
-        }
-        .music-on { animation: spin 4s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .lang-btn:hover { background: var(--gold); color: #000; }
 
         /* Главный экран */
         .hero-section {
@@ -129,29 +196,30 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 80px 20px 40px 20px;
+            padding-top: 100px;
         }
         .hero-subtitle {
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             color: var(--gold);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         .hero-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 4rem;
+            font-size: 4.2rem;
             font-weight: 300;
             font-style: italic;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
         }
         .hero-date {
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            border-top: 1px solid var(--gold);
-            border-bottom: 1px solid var(--gold);
-            padding: 8px 30px;
-            margin-top: 20px;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            border-top: 1px solid rgba(212, 175, 55, 0.6);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.6);
+            padding: 8px 25px;
+            margin-top: 15px;
         }
 
         .invitation-text {
@@ -159,51 +227,51 @@
             font-size: 1.6rem;
             font-style: italic;
             color: var(--text-muted);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         .parents-names {
             font-size: 1.3rem;
             color: var(--gold);
             font-weight: 500;
-            margin-top: 10px;
         }
 
         /* Таймер */
         .timer-title {
-            font-size: 1rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--gold);
             margin-bottom: 25px;
         }
-        .countdown { display: flex; justify-content: space-around; max-width: 400px; margin: 0 auto; }
+        .countdown { display: flex; justify-content: space-around; max-width: 380px; margin: 0 auto; }
         .countdown-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(212, 175, 55, 0.25);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.2);
             padding: 12px 5px;
-            border-radius: 6px;
-            width: 75px;
+            border-radius: 4px;
+            width: 72px;
         }
         .countdown-number {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
+            font-size: 1.9rem;
             color: var(--gold);
-            font-weight: 600;
+            font-weight: 500;
             display: block;
         }
-        .countdown-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); }
+        .countdown-label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); }
 
-        /* Блок инфо и Карта */
+        /* Карточка инфо */
         .details-card {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.01);
             border: 1px solid rgba(212, 175, 55, 0.15);
-            padding: 40px 20px;
-            border-radius: 8px;
+            padding: 45px 20px;
+            border-radius: 4px;
+            position: relative;
         }
-        .details-item { margin-bottom: 30px; }
+        .details-item { margin-bottom: 35px; }
         .details-item:last-child { margin-bottom: 0; }
-        .details-icon { font-size: 1.6rem; margin-bottom: 5px; }
-        .details-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
+        .details-icon { font-size: 1.5rem; color: var(--gold); margin-bottom: 5px; }
+        .details-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
         .details-value { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; }
         
         .map-btn {
@@ -213,223 +281,247 @@
             background: transparent;
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 8px 18px;
-            border-radius: 4px;
-            font-size: 0.85rem;
+            padding: 8px 16px;
+            font-size: 0.8rem;
             text-transform: uppercase;
             cursor: pointer;
             margin-top: 15px;
             text-decoration: none;
             transition: all 0.3s;
+            letter-spacing: 1px;
         }
         .map-btn:hover { background: var(--gold); color: #000; }
 
         /* RSVP */
         .rsvp-form { display: flex; flex-direction: column; gap: 20px; max-width: 400px; margin: 30px auto 0 auto; }
         .input-group { text-align: left; }
-        .input-group label { font-size: 0.8rem; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 6px; }
+        .input-group label { font-size: 0.75rem; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 6px; letter-spacing: 1px; }
         .rsvp-input {
-            width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 4px; color: white; font-size: 1rem;
+            width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 4px; color: white; font-size: 1rem;
         }
         .rsvp-input:focus { outline: none; border-color: var(--gold); }
         .radio-container { display: flex; gap: 10px; margin-top: 5px; align-items: center;}
-        .radio-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.95rem; }
-        .radio-label input { accent-color: var(--gold); width: 18px; height: 18px; }
+        .radio-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; }
+        .radio-label input { accent-color: var(--gold); width: 16px; height: 16px; }
         
         .submit-btn {
             background: linear-gradient(135deg, #d4af37, #aa841b); color: #000; border: none;
-            padding: 16px; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
-            border-radius: 4px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            padding: 16px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+            border-radius: 4px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
         }
 
         @media (max-width: 480px) {
-            .hero-title { font-size: 3.2rem; }
+            .hero-title { font-size: 3.4rem; }
             .countdown-item { width: 68px; }
+            .music-control { right: 8%; bottom: 25px; } /* Оптимально для пальца на мобильных */
         }
     </style>
 </head>
 <body>
 
-    <!-- Аудиоэлемент (Ссылка на нежную фоновую музыку, можно заменить на свою) -->
-    <audio id="bgMusic" loop preload="auto">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Кнопка Музыки -->
-    <div class="music-control" id="musicBtn" onclick="toggleMusic()">
-        <svg id="musicIconPlay" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    <!-- ЭКРАН ОЖИДАНИЯ: КОНВЕРТ ПИСЬМА -->
+    <div id="envelope-overlay">
+        <div class="envelope-card">
+            <p class="hero-subtitle" style="font-size: 0.85rem; margin-bottom: 5px;" id="t-env-top">Шақыру / Приглашение</p>
+            <div class="pattern-divider">
+                <svg viewBox="0 0 100 20">
+                    <path d="M10,10 Q25,0 40,10 T70,10 T100,10 M40,10 Q50,20 60,10" fill="none" stroke="#d4af37" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <h2 class="hero-title" style="font-size: 3.2rem; margin-bottom: 10px;">Dana</h2>
+            <p class="hero-subtitle" style="font-size: 0.8rem; letter-spacing: 2px;">27.06.2026</p>
+            <button class="open-btn" id="t-open-btn" onclick="openEnvelope()">Ашу / Открыть</button>
+        </div>
     </div>
 
-    <!-- Углы -->
-    <div class="ornament-corner top-left"></div><div class="ornament-corner top-right"></div>
-    <div class="ornament-corner bottom-left"></div><div class="ornament-corner bottom-right"></div>
-
-    <!-- Переключатель Языка -->
-    <div class="top-controls">
-        <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">Русский</button>
-    </div>
-
-    <!-- Главный Экран -->
-    <section class="container hero-section">
-        <p class="hero-subtitle" id="t-main-sub">Қыз Ұзату</p>
-        <div class="pattern-divider">
-            <svg viewBox="0 0 100 20">
-                <path d="M10,10 Q25,0 40,10 T70,10 T100,10 M40,10 Q50,20 60,10" fill="none" stroke="#d4af37" stroke-width="2"/>
-                <circle cx="50" cy="10" r="3" />
-            </svg>
-        </div>
-        <h1 class="hero-title">Дана</h1>
-        <p class="hero-date">27.06.2026</p>
-    </section>
-
-    <!-- Текст приглашения -->
-    <section class="container fade-in">
-        <p class="hero-subtitle" id="t-inv-dear">Құрметті қонақтар!</p>
-        <p class="invitation-text" id="t-inv-text">
-            Аялап өсірген қызымыз Дананы қияға қондыру салтанатына арналған ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!
-        </p>
-        <p class="hero-subtitle" id="t-hosts" style="font-size: 0.85rem; margin-top: 40px;">Той иелері:</p>
-        <p class="parents-names">Руслан - Елена</p>
-    </section>
-
-    <!-- Время и Место -->
-    <section class="container fade-in">
-        <div class="details-card">
-            <div class="details-item">
-                <div class="details-icon">📅</div>
-                <p class="details-label" id="t-det-date-lbl">Күн парағы</p>
-                <p class="details-value" id="t-det-date-val">27 маусым 2026 жыл</p>
-            </div>
-            
-            <div class="details-item">
-                <div class="details-icon">⏰</div>
-                <p class="details-label" id="t-det-time-lbl">Басталуы</p>
-                <p class="details-value" id="t-det-time-val">Сағат 16:00-де</p>
-            </div>
-
-            <div class="details-item">
-                <div class="details-icon">📍</div>
-                <p class="details-label" id="t-det-loc-lbl">Мекен-жайы</p>
-                <p class="details-value" id="t-det-loc-val">Бастау ауылы</p>
-                <!-- Ссылка на карту (Замените URL на точную ссылку вашей локации, если нужно) -->
-                <a href="https://maps.google.com/?q=село+Бастау" target="_blank" class="map-btn" id="t-map-btn">
-                    🗺️ <span id="t-map-btn-txt">Картаны ашу</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Таймер -->
-    <section class="container fade-in">
-        <h2 class="timer-title" id="t-timer-title">Салтанатқа дейін қалды:</h2>
-        <div class="countdown" id="countdown">
-            <div class="countdown-item">
-                <span class="countdown-number" id="days">00</span>
-                <span class="countdown-label" id="lbl-days">Күн</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="hours">00</span>
-                <span class="countdown-label" id="lbl-hours">Сағат</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="minutes">00</span>
-                <span class="countdown-label" id="lbl-mins">Мнут</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="seconds">00</span>
-                <span class="countdown-label" id="lbl-secs">Секунд</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Форма RSVP -->
-    <section class="container fade-in" style="padding-bottom: 110px;">
-        <p class="hero-subtitle" id="t-rsvp-title">Тойға келетініңізді растауыңызды сұраймыз</p>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;" id="t-rsvp-sub">Жауабыңыз тікелей WhatsApp-қа жолданады</p>
+    <!-- ОСНОВНОЙ КОНТЕНТ (ПОЯВЛЯЕТСЯ ПОСЛЕ КЛИКА) -->
+    <div id="main-content">
         
-        <form class="rsvp-form" id="rsvpForm">
-            <div class="input-group">
-                <label for="guestName" id="t-input-lbl">Сіздің есіміңіз (Аты-жөніңіз)</label>
-                <input type="text" id="guestName" class="rsvp-input" required>
-            </div>
+        <audio id="bgMusic" loop preload="auto">
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
 
-            <div class="input-group">
-                <label id="t-radio-main-lbl">Тойға келесіз бе?</label>
-                <div class="radio-container">
-                    <label class="radio-label">
-                        <input type="radio" name="attendance" value="yes" checked>
-                        <span id="t-radio-yes">Иә, келемін</span>
-                    </label>
+        <!-- Кнопка Музыки (Сдвинута ближе к центру) -->
+        <div class="music-control" id="musicBtn" onclick="toggleMusic()">
+            <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+        </div>
+
+        <!-- Тонкие Рамки -->
+        <div class="ornament-corner top-left"></div><div class="ornament-corner top-right"></div>
+        <div class="ornament-corner bottom-left"></div><div class="ornament-corner bottom-right"></div>
+
+        <!-- Язык -->
+        <div class="top-controls">
+            <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">Русский</button>
+        </div>
+
+        <!-- Секция 1 -->
+        <section class="container hero-section">
+            <!-- Графический элемент цветка/веточки слева -->
+            <img src="https://cdn-icons-png.flaticon.com/512/1043/1043425.png" class="flower-decor" style="top: 10%; left: 5%; transform: rotate(-30deg);" alt="">
+            
+            <p class="hero-subtitle" id="t-main-sub">Қыз Ұзату</p>
+            <div class="pattern-divider">
+                <svg viewBox="0 0 100 20">
+                    <path d="M10,10 Q25,0 40,10 T70,10 T100,10 M40,10 Q50,20 60,10" fill="none" stroke="#d4af37" stroke-width="2"/>
+                    <circle cx="50" cy="10" r="2" />
+                </svg>
+            </div>
+            <h1 class="hero-title">Дана</h1>
+            <p class="hero-date">27.06.2026</p>
+        </section>
+
+        <!-- Секция 2 -->
+        <section class="container fade-in">
+            <p class="hero-subtitle" id="t-inv-dear">Құрметті қонақтар!</p>
+            <p class="invitation-text" id="t-inv-text">
+                Аялап өсірген қызымыз Дананы қияға қондыру салтанатына арналған ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!
+            </p>
+            <p class="hero-subtitle" id="t-hosts" style="font-size: 0.8rem; margin-top: 35px;">Toй иелері:</p>
+            <p class="parents-names">Руслан - Елена</p>
+        </section>
+
+        <!-- Секция 3 -->
+        <section class="container fade-in">
+            <img src="https://cdn-icons-png.flaticon.com/512/1043/1043425.png" class="flower-decor" style="right: 5%; top: 45%; transform: scaleX(-1) rotate(-30deg);" alt="">
+            
+            <div class="details-card">
+                <div class="details-item">
+                    <div class="details-icon">📅</div>
+                    <p class="details-label" id="t-det-date-lbl">Күн парағы</p>
+                    <p class="details-value" id="t-det-date-val">27 маусым 2026 жыл</p>
                 </div>
-                <div class="radio-container" style="margin-top: 10px;">
-                    <label class="radio-label">
-                        <input type="radio" name="attendance" value="no">
-                        <span id="t-radio-no">Өкінішке орай, келе алмаймын</span>
-                    </label>
+                
+                <div class="details-item">
+                    <div class="details-icon">⏰</div>
+                    <p class="details-label" id="t-det-time-lbl">Басталуы</p>
+                    <p class="details-value" id="t-det-time-val">Сағат 16:00-де</p>
+                </div>
+
+                <div class="details-item">
+                    <div class="details-icon">📍</div>
+                    <p class="details-label" id="t-det-loc-lbl">Мекен-жайы</p>
+                    <p class="details-value" id="t-det-loc-val">Бастау ауылы</p>
+                    <a href="https://maps.google.com/?q=село+Бастау" target="_blank" class="map-btn" id="t-map-btn">
+                        🗺️ <span id="t-map-btn-txt">Картаны ашу</span>
+                    </a>
                 </div>
             </div>
+        </section>
 
-            <button type="submit" class="submit-btn" id="t-submit-btn">Жауапты жіберу</button>
-        </form>
-    </section>
+        <!-- Секция 4 -->
+        <section class="container fade-in">
+            <h2 class="timer-title" id="t-timer-title">Салтанатқа дейін қалды:</h2>
+            <div class="countdown" id="countdown">
+                <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label" id="lbl-days">Күн</span></div>
+                <div class="countdown-item"><span class="countdown-number" id="hours">00</span><span class="countdown-label" id="lbl-hours">Сағат</span></div>
+                <div class="countdown-item"><span class="countdown-number" id="minutes">00</span><span class="countdown-label" id="lbl-mins">Мнут</span></div>
+                <div class="countdown-item"><span class="countdown-number" id="seconds">00</span><span class="countdown-label" id="lbl-secs">Секунд</span></div>
+            </div>
+        </section>
+
+        <!-- Секция 5 -->
+        <section class="container fade-in" style="padding-bottom: 120px;">
+            <p class="hero-subtitle" id="t-rsvp-title">Тойға келетініңізді растауыңызды сұраймыз</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;" id="t-rsvp-sub">Жауабыңыз тікелей WhatsApp-қа жолданады</p>
+            
+            <form class="rsvp-form" id="rsvpForm">
+                <div class="input-group">
+                    <label for="guestName" id="t-input-lbl">Сіздің есіміңіз (Аты-жөніңіз)</label>
+                    <input type="text" id="guestName" class="rsvp-input" required>
+                </div>
+
+                <div class="input-group">
+                    <label id="t-radio-main-lbl">Тойға келесіз бе?</label>
+                    <div class="radio-container">
+                        <label class="radio-label"><input type="radio" name="attendance" value="yes" checked><span id="t-radio-yes">Иә, келемін</span></label>
+                    </div>
+                    <div class="radio-container" style="margin-top: 10px;">
+                        <label class="radio-label"><input type="radio" name="attendance" value="no"><span id="t-radio-no">Өкінішке орай, келе алмаймын</span></label>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="t-submit-btn">Жауапты жіберу</button>
+            </form>
+        </section>
+    </div>
 
     <script>
-        // БАЗА ДАННЫХ ДЛЯ ДВУХ ЯЗЫКОВ
+        // ЛОГИКА ОТКРЫТИЯ ПИСЬМА (КОНВЕРТА)
+        function openEnvelope() {
+            const overlay = document.getElementById('envelope-overlay');
+            const mainContent = document.getElementById('main-content');
+            
+            overlay.style.opacity = '0';
+            overlay.style.transform = 'scale(1.05)';
+            
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                mainContent.style.display = 'block';
+                setTimeout(() => {
+                    mainContent.style.opacity = '1';
+                    // Инициализация анимации для первого экрана
+                    document.querySelector('.hero-section').classList.add('visible');
+                    // Автозапуск музыки при открытии конверта
+                    playMusic();
+                }, 50);
+            }, 1000);
+        }
+
+        // МУЗЫКАЛЬНЫЙ ПЛЕЕР
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = false;
+
+        function playMusic() {
+            music.play().then(() => {
+                musicBtn.classList.add('music-on');
+                isPlaying = true;
+            }).catch(e => console.log("Браузер заблокировал звук до действия пользователя"));
+        }
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicBtn.classList.remove('music-on');
+            } else {
+                music.play();
+                musicBtn.classList.add('music-on');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // ПЕРЕКЛЮЧЕНИЕ ЯЗЫКОВ
         let currentLang = 'kk';
         const langData = {
             kk: {
-                langBtn: "Русский",
-                mainSub: "Қыз Ұзату",
-                invDear: "Құрметті қонақтар!",
+                langBtn: "Русский", mainSub: "Қыз Ұзату", invDear: "Құрметті қонақтар!",
                 invText: "Аялап өсірген қызымыз Дананы қияға қондыру салтанатына арналған ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!",
-                hosts: "Той иелері:",
-                detDateLbl: "Күн парағы",
-                detDateVal: "27 маусым 2026 жыл",
-                detTimeLbl: "Басталуы",
-                detTimeVal: "Сағат 16:00-де",
-                detLocLbl: "Мекен-жайы",
-                detLocVal: "Бастау ауылы",
-                mapBtn: "Картаны ашу",
-                timerTitle: "Салтанатқа дейін қалды:",
+                hosts: "Той иелері:", detDateLbl: "Күн парағы", detDateVal: "27 маусым 2026 жыл",
+                detTimeLbl: "Басталуы", detTimeVal: "Сағат 16:00-де", detLocLbl: "Мекен-жайы",
+                detLocVal: "Бастау ауылы", mapBtn: "Картаны ашу", timerTitle: "Салтанатқа дейін қалды:",
                 lblDays: "Күн", lblHours: "Сағат", lblMins: "Минут", lblSecs: "Секунд",
-                rsvpTitle: "Тойға келетініңізді растауыңызды сұраймыз",
-                rsvpSub: "Жауабыңыз тікелей WhatsApp-қа жолданады",
-                inputLbl: "Сіздің есіміңіз (Аты-жөніңіз)",
-                radioMainLbl: "Тойға келесіз бе?",
-                radioYes: "Иә, келемін",
-                radioNo: "Өкінішке орай, келе алмаймын",
-                submitBtn: "Жауапты жіберу"
+                rsvpTitle: "Тойға келетініңізді растауыңызды сұраймыз", rsvpSub: "Жауабыңыз тікелей WhatsApp-қа жолданады",
+                inputLbl: "Сіздің есіміңіз (Аты-жөніңіз)", radioMainLbl: "Тойға келесіз бе?",
+                radioYes: "Иә, келемін", radioNo: "Өкінішке орай, келе алмаймын", submitBtn: "Жауапты жіберу"
             },
             ru: {
-                langBtn: "Қазақша",
-                mainSub: "Кыз Узату",
-                invDear: "Дорогие гости!",
+                langBtn: "Қазақша", mainSub: "Кыз Узату", invDear: "Дорогие гости!",
                 invText: "Приглашаем вас стать почетными гостями праздничного дастархана, посвященного проводам нашей любимой дочери Даны!",
-                hosts: "Хозяева торжества:",
-                detDateLbl: "Дата",
-                detDateVal: "27 июня 2026 года",
-                detTimeLbl: "Время",
-                detTimeVal: "В 16:00 ч.",
-                detLocLbl: "Место проведения",
-                detLocVal: "село Бастау",
-                mapBtn: "Открыть карту",
-                timerTitle: "До торжества осталось:",
+                hosts: "Хозяева торжества:", detDateLbl: "Дата", detDateVal: "27 июня 2026 года",
+                detTimeLbl: "Время", detTimeVal: "В 16:00 ч.", detLocLbl: "Место проведения",
+                detLocVal: "село Бастау", mapBtn: "Открыть карту", timerTitle: "До торжества осталось:",
                 lblDays: "Дней", lblHours: "Часов", lblMins: "Минут", lblSecs: "Секунд",
-                rsvpTitle: "Пожалуйста, подтвердите ваше присутствие",
-                rsvpSub: "Ваш ответ будет отправлен напрямую в WhatsApp",
-                inputLbl: "Ваше имя и фамилия",
-                radioMainLbl: "Придете ли вы на торжество?",
-                radioYes: "Да, приду",
-                radioNo: "К сожалению, не смогу",
-                submitBtn: "Отправить ответ"
+                rsvpTitle: "Пожалуйста, подтвердите ваше присутствие", rsvpSub: "Ваш ответ будет отправлен напрямую в WhatsApp",
+                inputLbl: "Ваше имя и фамилия", radioMainLbl: "Придете ли вы на торжество?",
+                radioYes: "Да, приду", radioNo: "К сожалению, не смогу", submitBtn: "Отправить ответ"
             }
         };
 
         function toggleLanguage() {
             currentLang = currentLang === 'kk' ? 'ru' : 'kk';
             const data = langData[currentLang];
-            
             document.getElementById('langBtn').innerText = data.langBtn;
             document.getElementById('t-main-sub').innerText = data.mainSub;
             document.getElementById('t-inv-dear').innerText = data.invDear;
@@ -456,43 +548,16 @@
             document.getElementById('t-submit-btn').innerText = data.submitBtn;
         }
 
-        // ПЛЕЕР МУЗЫКИ
-        const music = document.getElementById('bgMusic');
-        const musicBtn = document.getElementById('musicBtn');
-        let isPlaying = false;
-
-        function toggleMusic() {
-            if (isPlaying) {
-                music.pause();
-                musicBtn.classList.remove('music-on');
-            } else {
-                music.play().catch(e => console.log("Музыка начнет играть после первого взаимодействия."));
-                musicBtn.classList.add('music-on');
-            }
-            isPlaying = !isPlaying;
-        }
-
-        // Автозапуск музыки при первом клике на экран (требование современных браузеров)
-        document.body.addEventListener('click', function() {
-            if(!isPlaying) {
-                music.play().catch(()=>{});
-                musicBtn.classList.add('music-on');
-                isPlaying = true;
-            }
-        }, { once: true });
-
         // ТАЙМЕР
         const targetDate = new Date('June 27, 2026 16:00:00').getTime();
         function updateTimer() {
             const now = new Date().getTime();
             const difference = targetDate - now;
-            if (difference < 0) { return; }
-
+            if (difference < 0) return;
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
             document.getElementById('days').innerText = days < 10 ? '0' + days : days;
             document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
             document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
@@ -501,38 +566,25 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // СКРОЛЛ-АНИМАЦИЯ
+        // СКРОЛЛ АНИМАЦИЯ
         const fadeElements = document.querySelectorAll('.fade-in');
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
         }, { threshold: 0.1 });
         fadeElements.forEach(el => observer.observe(el));
 
-        // RSVP НА WHATSAPP
+        // RSVP ФОРМА
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // ВАЖНО: Укажите ваш номер телефона без знака плюс!
-            const phoneNumber = "77071234567"; 
-            
+            const phoneNumber = "77071234567"; // Поменяйте на реальный номер
             const name = document.getElementById('guestName').value;
             const attendance = document.querySelector('input[name="attendance"]:checked').value;
-            
             let text = "";
             if(currentLang === 'kk') {
-                text = `Сәлеметсіз бе! %0A%0AҚыз ұзату шақыруына жауап:%0A`;
-                text += `*Қонақ:* ${name}%0A`;
-                text += `*Жауап:* ${attendance === 'yes' ? '✅ Тойға қуанышты болып КЕЛЕМІН!' : '❌ Өкінішке орай, КЕЛЕ АЛМАЙМЫН.'}`;
+                text = `Сәлеметсіз бе! %0A%0AҚыз ұзату шақыруына жауап:%0A*Қонақ:* ${name}%0A*Жауап:* ${attendance === 'yes' ? '✅ КЕЛЕМІН!' : '❌ КЕЛЕ АЛМАЙМЫН.'}`;
             } else {
-                text = `Здравствуйте! %0A%0AОтвет на приглашение Кыз узату:%0A`;
-                text += `*Гость:* ${name}%0A`;
-                text += `*Ответ:* ${attendance === 'yes' ? '✅ С радостью ПРИДУ!' : '❌ К сожалению, НЕ СМОГУ присутствовать.'}`;
+                text = `Здравствуйте! %0A%0AОтвет на приглашение Кыз узату:%0A*Гость:* ${name}%0A*Ответ:* ${attendance === 'yes' ? '✅ ПРИДУ!' : '❌ НЕ СМОГУ.'}`;
             }
-            
             window.open(`https://api.whatsapp.com/send?phone=${phoneNumber}&text=${text}`, '_blank');
         });
     </script>
