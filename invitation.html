@@ -12,7 +12,6 @@
         :root {
             --bg-color: #0b291b;
             --gold: #d4af37;
-            --gold-light: #f3e5ab;
             --text-light: #ffffff;
             --text-muted: #e0e0e0;
         }
@@ -27,247 +26,195 @@
             line-height: 1.6;
         }
 
-        /* ЭКРАН-КОНВЕРТ (PRELOADER) */
-        #envelope-overlay {
+        /* --------------------------------------------------
+           СУПЕР ИНТЕРАКТИВНЫЙ КОНВЕРТ (3D ENVELOPE)
+        ----------------------------------------------------- */
+        #envelope-container {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-color);
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #061810;
             z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            perspective: 1000px;
             transition: opacity 1s ease, transform 1s ease;
-            padding: 20px;
         }
 
-        /* Задний цветочный фон для конверта */
-        #envelope-overlay::before, body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=1000&auto=format&fit=crop'); /* Элегантный силуэт цветов */
-            background-size: cover;
-            background-position: center;
-            opacity: 0.05; /* Едва заметный, дорогой паттерн */
-            pointer-events: none;
-            z-index: -1;
+        /* Анимированные цветы за конвертом */
+        #envelope-container::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover; background-position: center; opacity: 0.04; pointer-events: none;
         }
 
-        .envelope-card {
-            border: 1px solid var(--gold);
-            padding: 40px 30px;
-            text-align: center;
-            max-width: 450px;
-            width: 100%;
-            background: rgba(11, 41, 27, 0.9);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        .envelope-wrapper {
             position: relative;
-            border-radius: 4px;
-        }
-
-        .envelope-card::after {
-            content: "";
-            position: absolute;
-            top: 10px; left: 10px; right: 10px; bottom: 10px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            pointer-events: none;
-        }
-
-        .open-btn {
-            background: transparent;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 14px 28px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            width: 320px;
+            height: 220px;
+            background-color: #092216;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             cursor: pointer;
-            margin-top: 30px;
-            font-weight: 600;
-            transition: all 0.4s ease;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
-        }
-        .open-btn:hover {
-            background: var(--gold);
-            color: #000;
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            margin-bottom: 40px;
         }
 
-        /* ОСНОВНОЙ КОНТЕНТ (СКРЫТ ДО ОТКРЫТИЯ) */
-        #main-content {
-            opacity: 0;
-            transition: opacity 1.5s ease;
-            display: none;
+        /* Верхний клапан (крышка письма) */
+        .envelope-flap {
+            position: absolute;
+            top: 0; left: 0; width: 0; height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 115px solid #0d3321;
+            transform-origin: top;
+            transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s;
+            z-index: 4;
         }
 
-        /* ФИКСИРОВАННАЯ КНОПКА МУЗЫКИ (БЛИЖЕ К ЦЕНТРУ) */
-        .music-control {
-            position: fixed;
-            bottom: 30px;
-            right: 15%; /* Сдвинута ближе к центру от края */
-            z-index: 1000;
-            background: rgba(11, 41, 27, 0.9);
+        /* Боковые стороны конверта внутри конструкции */
+        .envelope-pockets {
+            position: absolute;
+            top: 0; left: 0; width: 0; height: 0;
+            border-left: 160px solid #0c2d1d;
+            border-right: 160px solid #0c2d1d;
+            border-bottom: 110px solid #092216;
+            border-top: 110px solid transparent;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            z-index: 3;
+        }
+
+        /* Само письмо, которое прячется внутри */
+        .letter-inside {
+            position: absolute;
+            top: 10px; left: 15px;
+            width: 290px; height: 190px;
+            background: linear-gradient(135deg, #0e3a26, #092317);
             border: 1px solid var(--gold);
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
+            z-index: 2;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.6s ease 0.6s;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
-        .music-control svg { width: 20px; height: 20px; fill: var(--gold); }
+
+        .letter-inside h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--gold); font-style: italic; }
+        .letter-inside p { font-size: 0.75rem; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; margin-top: 5px; }
+
+        /* Сургучная печать / Кнопка штампа */
+        .wax-seal {
+            position: absolute;
+            top: 95px; left: 50%; transform: translateX(-50%);
+            width: 44px; height: 44px;
+            background: radial-gradient(#e6c253, #b89218);
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4), inset 0 0 4px rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 0.7rem; font-weight: bold; color: #3d2f02;
+            transition: transform 0.3s ease;
+        }
+        .wax-seal::after { content: "D"; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; }
+
+        /* Кнопка снизу для полной уверенности клика */
+        .env-open-text-btn {
+            background: transparent; border: 1px solid var(--gold); color: var(--gold);
+            padding: 12px 24px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;
+            cursor: pointer; font-weight: 600; transition: all 0.3s;
+        }
+        .env-open-text-btn:hover { background: var(--gold); color: #000; }
+
+        /* КЛАССЫ АНИМАЦИИ ПРИ ОТКРЫТИИ */
+        .envelope-wrapper.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+        .envelope-wrapper.open .letter-inside {
+            transform: translateY(-130px) scale(1.02);
+            z-index: 5;
+        }
+        .envelope-wrapper.open .wax-seal {
+            transform: translateX(-50%) translateY(60px);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.3s ease 0.2s;
+        }
+
+        /* --------------------------------------------------
+           ОСНОВНОЙ КОНТЕНТ ПРИГЛАШЕНИЯ
+        ----------------------------------------------------- */
+        #main-content { display: none; opacity: 0; transition: opacity 1.2s ease; }
+
+        /* Кнопка музыки — БЛИЖЕ К ЦЕНТРУ */
+        .music-control {
+            position: fixed; bottom: 30px; right: 15%; z-index: 1000;
+            background: rgba(11, 41, 27, 0.95); border: 1px solid var(--gold);
+            width: 48px; height: 48px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .music-control svg { width: 22px; height: 22px; fill: var(--gold); }
         .music-on { animation: spin 4s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Растительные узоры по бокам страниц */
-        .flower-decor {
-            position: absolute;
-            width: 60px;
-            opacity: 0.25;
-            pointer-events: none;
+        /* Фон с цветами для основного контента */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover; background-position: center; opacity: 0.05; pointer-events: none; z-index: -1;
         }
 
-        /* Угловые рамки */
-        .ornament-corner {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            z-index: 10;
-            opacity: 0.3;
-            pointer-events: none;
-        }
+        /* Цветочные прозрачные декор-элементы */
+        .flower-decor { position: absolute; width: 85px; opacity: 0.22; pointer-events: none; }
+
+        /* Тонкие золотые рамки */
+        .ornament-corner { position: fixed; width: 50px; height: 50px; z-index: 10; opacity: 0.3; pointer-events: none; }
         .top-left { top: 15px; left: 15px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
         .top-right { top: 15px; right: 15px; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
         .bottom-left { bottom: 15px; left: 15px; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
         .bottom-right { bottom: 15px; right: 15px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
 
-        .pattern-divider {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 25px auto;
-            width: 120px;
-        }
+        .pattern-divider { display: flex; justify-content: center; align-items: center; margin: 25px auto; width: 120px; }
         .pattern-divider svg { fill: var(--gold); width: 100%; height: auto; }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 60px 25px;
-            text-align: center;
-            position: relative;
-        }
+        .container { max-width: 600px; margin: 0 auto; padding: 60px 25px; text-align: center; position: relative; }
 
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease, transform 1s ease;
-        }
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 1s ease, transform 1s ease; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-        /* ВЕРХНЯЯ ПАНЕЛЬ: Переключатель языка */
-        .top-controls {
-            position: absolute;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-        }
+        /* Верхняя панель переключения языков */
+        .top-controls { position: absolute; top: 25px; left: 50%; transform: translateX(-50%); z-index: 100; }
         .lang-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            color: var(--text-light);
-            padding: 6px 14px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            border-radius: 20px;
-            transition: all 0.3s;
-            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(212, 175, 55, 0.4);
+            color: var(--text-light); padding: 6px 14px; font-size: 0.75rem; cursor: pointer; border-radius: 20px;
+            transition: all 0.3s; letter-spacing: 1px;
         }
         .lang-btn:hover { background: var(--gold); color: #000; }
 
-        /* Главный экран */
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding-top: 100px;
-        }
-        .hero-subtitle {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: var(--gold);
-            margin-bottom: 10px;
-        }
-        .hero-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 4.2rem;
-            font-weight: 300;
-            font-style: italic;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
-        .hero-date {
-            font-size: 1rem;
-            letter-spacing: 3px;
-            border-top: 1px solid rgba(212, 175, 55, 0.6);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.6);
-            padding: 8px 25px;
-            margin-top: 15px;
-        }
+        /* Главные стили текстов */
+        .hero-section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-top: 80px; }
+        .hero-subtitle { font-size: 1rem; text-transform: uppercase; letter-spacing: 5px; color: var(--gold); margin-bottom: 10px; }
+        .hero-title { font-family: 'Cormorant Garamond', serif; font-size: 4.2rem; font-weight: 300; font-style: italic; margin-bottom: 20px; }
+        .hero-date { font-size: 1rem; letter-spacing: 3px; border-top: 1px solid rgba(212, 175, 55, 0.5); border-bottom: 1px solid rgba(212, 175, 55, 0.5); padding: 8px 25px; margin-top: 15px; }
 
-        .invitation-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            font-style: italic;
-            color: var(--text-muted);
-            margin-bottom: 25px;
-        }
-        .parents-names {
-            font-size: 1.3rem;
-            color: var(--gold);
-            font-weight: 500;
-        }
+        .invitation-text { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-style: italic; color: var(--text-muted); margin-bottom: 25px; }
+        .parents-names { font-size: 1.3rem; color: var(--gold); font-weight: 500; }
 
         /* Таймер */
-        .timer-title {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--gold);
-            margin-bottom: 25px;
-        }
+        .timer-title { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 25px; }
         .countdown { display: flex; justify-content: space-around; max-width: 380px; margin: 0 auto; }
-        .countdown-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            padding: 12px 5px;
-            border-radius: 4px;
-            width: 72px;
-        }
-        .countdown-number {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.9rem;
-            color: var(--gold);
-            font-weight: 500;
-            display: block;
-        }
+        .countdown-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(212, 175, 55, 0.15); padding: 12px 5px; border-radius: 4px; width: 72px; }
+        .countdown-number { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; color: var(--gold); font-weight: 500; display: block; }
         .countdown-label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); }
 
         /* Карточка инфо */
-        .details-card {
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            padding: 45px 20px;
-            border-radius: 4px;
-            position: relative;
-        }
+        .details-card { background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(212, 175, 55, 0.15); padding: 45px 20px; border-radius: 4px; }
         .details-item { margin-bottom: 35px; }
         .details-item:last-child { margin-bottom: 0; }
         .details-icon { font-size: 1.5rem; color: var(--gold); margin-bottom: 5px; }
@@ -275,31 +222,17 @@
         .details-value { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; }
         
         .map-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: transparent;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 8px 16px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            margin-top: 15px;
-            text-decoration: none;
-            transition: all 0.3s;
-            letter-spacing: 1px;
+            display: inline-flex; align-items: center; gap: 8px; background: transparent; border: 1px solid var(--gold);
+            color: var(--gold); padding: 8px 16px; font-size: 0.8rem; text-transform: uppercase; cursor: pointer;
+            margin-top: 15px; text-decoration: none; transition: all 0.3s;
         }
         .map-btn:hover { background: var(--gold); color: #000; }
 
         /* RSVP */
         .rsvp-form { display: flex; flex-direction: column; gap: 20px; max-width: 400px; margin: 30px auto 0 auto; }
         .input-group { text-align: left; }
-        .input-group label { font-size: 0.75rem; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 6px; letter-spacing: 1px; }
-        .rsvp-input {
-            width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 4px; color: white; font-size: 1rem;
-        }
+        .input-group label { font-size: 0.75rem; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 6px; }
+        .rsvp-input { width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 4px; color: white; font-size: 1rem; }
         .rsvp-input:focus { outline: none; border-color: var(--gold); }
         .radio-container { display: flex; gap: 10px; margin-top: 5px; align-items: center;}
         .radio-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; }
@@ -314,35 +247,35 @@
         @media (max-width: 480px) {
             .hero-title { font-size: 3.4rem; }
             .countdown-item { width: 68px; }
-            .music-control { right: 8%; bottom: 25px; } /* Оптимально для пальца на мобильных */
+            .music-control { right: 8%; bottom: 25px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ЭКРАН ОЖИДАНИЯ: КОНВЕРТ ПИСЬМА -->
-    <div id="envelope-overlay">
-        <div class="envelope-card">
-            <p class="hero-subtitle" style="font-size: 0.85rem; margin-bottom: 5px;" id="t-env-top">Шақыру / Приглашение</p>
-            <div class="pattern-divider">
-                <svg viewBox="0 0 100 20">
-                    <path d="M10,10 Q25,0 40,10 T70,10 T100,10 M40,10 Q50,20 60,10" fill="none" stroke="#d4af37" stroke-width="1.5"/>
-                </svg>
+    <!-- 3D ЭКРАН С ЭФФЕКТОМ НАСТОЯЩЕГО КОНВЕРТА -->
+    <div id="envelope-container">
+        <div class="envelope-wrapper" id="envelope" onclick="openEnvelopeAnimation()">
+            <div class="envelope-flap"></div>
+            <div class="envelope-pockets"></div>
+            <div class="letter-inside">
+                <h3>Dana</h3>
+                <p>Қыз Ұзату</p>
             </div>
-            <h2 class="hero-title" style="font-size: 3.2rem; margin-bottom: 10px;">Dana</h2>
-            <p class="hero-subtitle" style="font-size: 0.8rem; letter-spacing: 2px;">27.06.2026</p>
-            <button class="open-btn" id="t-open-btn" onclick="openEnvelope()">Ашу / Открыть</button>
+            <div class="wax-seal"></div>
         </div>
+        <button class="env-open-text-btn" id="t-open-hint" onclick="openEnvelopeAnimation()">Ашу / Открыть</button>
     </div>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ (ПОЯВЛЯЕТСЯ ПОСЛЕ КЛИКА) -->
+    <!-- ОСНОВНОЙ САЙТ (ОТКРЫВАЕТСЯ ПОСЛЕ КОНВЕРТА) -->
     <div id="main-content">
         
+        <!-- Фоновое аудио (можно заменить ссылку на свою mp3) -->
         <audio id="bgMusic" loop preload="auto">
             <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         </audio>
 
-        <!-- Кнопка Музыки (Сдвинута ближе к центру) -->
+        <!-- Кнопка музыки ближе к центру -->
         <div class="music-control" id="musicBtn" onclick="toggleMusic()">
             <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
         </div>
@@ -351,15 +284,15 @@
         <div class="ornament-corner top-left"></div><div class="ornament-corner top-right"></div>
         <div class="ornament-corner bottom-left"></div><div class="ornament-corner bottom-right"></div>
 
-        <!-- Язык -->
+        <!-- Переключатель языка -->
         <div class="top-controls">
             <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">Русский</button>
         </div>
 
-        <!-- Секция 1 -->
+        <!-- Секция 1: Приветствие -->
         <section class="container hero-section">
-            <!-- Графический элемент цветка/веточки слева -->
-            <img src="https://cdn-icons-png.flaticon.com/512/1043/1043425.png" class="flower-decor" style="top: 10%; left: 5%; transform: rotate(-30deg);" alt="">
+            <!-- Прозрачные нежные цветы -->
+            <img src="https://cdn-icons-png.flaticon.com/512/1043/1043425.png" class="flower-decor" style="top: 12%; left: 6%; transform: rotate(-25deg);" alt="">
             
             <p class="hero-subtitle" id="t-main-sub">Қыз Ұзату</p>
             <div class="pattern-divider">
@@ -372,7 +305,7 @@
             <p class="hero-date">27.06.2026</p>
         </section>
 
-        <!-- Секция 2 -->
+        <!-- Секция 2: Текст приглашения -->
         <section class="container fade-in">
             <p class="hero-subtitle" id="t-inv-dear">Құрметті қонақтар!</p>
             <p class="invitation-text" id="t-inv-text">
@@ -382,9 +315,9 @@
             <p class="parents-names">Руслан - Елена</p>
         </section>
 
-        <!-- Секция 3 -->
+        <!-- Секция 3: Дата и Карта -->
         <section class="container fade-in">
-            <img src="https://cdn-icons-png.flaticon.com/512/1043/1043425.png" class="flower-decor" style="right: 5%; top: 45%; transform: scaleX(-1) rotate(-30deg);" alt="">
+            <img src="https://cdn-icons-png.flaticon.com/512/1043/1043425.png" class="flower-decor" style="right: 6%; top: 40%; transform: scaleX(-1) rotate(-30deg);" alt="">
             
             <div class="details-card">
                 <div class="details-item">
@@ -410,7 +343,7 @@
             </div>
         </section>
 
-        <!-- Секция 4 -->
+        <!-- Секция 4: Обратный отсчет -->
         <section class="container fade-in">
             <h2 class="timer-title" id="t-timer-title">Салтанатқа дейін қалды:</h2>
             <div class="countdown" id="countdown">
@@ -421,7 +354,7 @@
             </div>
         </section>
 
-        <!-- Секция 5 -->
+        <!-- Секция 5: RSVP форма подтверждения -->
         <section class="container fade-in" style="padding-bottom: 120px;">
             <p class="hero-subtitle" id="t-rsvp-title">Тойға келетініңізді растауыңызды сұраймыз</p>
             <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;" id="t-rsvp-sub">Жауабыңыз тікелей WhatsApp-қа жолданады</p>
@@ -448,25 +381,32 @@
     </div>
 
     <script>
-        // ЛОГИКА ОТКРЫТИЯ ПИСЬМА (КОНВЕРТА)
-        function openEnvelope() {
-            const overlay = document.getElementById('envelope-overlay');
+        // КРАСИВАЯ 3D АНИМАЦИЯ ОТКРЫТИЯ КОНВЕРТА
+        let envelopeOpened = false;
+        function openEnvelopeAnimation() {
+            if (envelopeOpened) return;
+            envelopeOpened = true;
+
+            const envelope = document.getElementById('envelope');
+            const container = document.getElementById('envelope-container');
             const mainContent = document.getElementById('main-content');
-            
-            overlay.style.opacity = '0';
-            overlay.style.transform = 'scale(1.05)';
-            
+
+            // Кладем клапан назад, вытаскиваем письмо
+            envelope.classList.add('open');
+
+            // Через 1.5 секунды, когда письмо выехало, растворяем весь preloader экран
             setTimeout(() => {
-                overlay.style.display = 'none';
+                container.style.opacity = '0';
+                container.style.transform = 'scale(0.95)';
                 mainContent.style.display = 'block';
+
                 setTimeout(() => {
+                    container.style.display = 'none';
                     mainContent.style.opacity = '1';
-                    // Инициализация анимации для первого экрана
                     document.querySelector('.hero-section').classList.add('visible');
-                    // Автозапуск музыки при открытии конверта
-                    playMusic();
-                }, 50);
-            }, 1000);
+                    playMusic(); // Музыка запускается автоматически!
+                }, 1000);
+            }, 1600);
         }
 
         // МУЗЫКАЛЬНЫЙ ПЛЕЕР
@@ -478,7 +418,7 @@
             music.play().then(() => {
                 musicBtn.classList.add('music-on');
                 isPlaying = true;
-            }).catch(e => console.log("Браузер заблокировал звук до действия пользователя"));
+            }).catch(e => console.log("Браузер ожидает взаимодействия для звука."));
         }
 
         function toggleMusic() {
@@ -492,7 +432,7 @@
             isPlaying = !isPlaying;
         }
 
-        // ПЕРЕКЛЮЧЕНИЕ ЯЗЫКОВ
+        // СИСТЕМА ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА (ДВУХЪЯЗЫЧНЫЙ САЙТ)
         let currentLang = 'kk';
         const langData = {
             kk: {
@@ -566,17 +506,17 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // СКРОЛЛ АНИМАЦИЯ
+        // АНИМАЦИЯ ПРИ СКРОЛЛЕ
         const fadeElements = document.querySelectorAll('.fade-in');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
         }, { threshold: 0.1 });
         fadeElements.forEach(el => observer.observe(el));
 
-        // RSVP ФОРМА
+        // ИНТЕГРАЦИЯ RSVP С WHATSAPP
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const phoneNumber = "77071234567"; // Поменяйте на реальный номер
+            const phoneNumber = "77071234567"; // Напишите сюда свой номер телефона
             const name = document.getElementById('guestName').value;
             const attendance = document.querySelector('input[name="attendance"]:checked').value;
             let text = "";
