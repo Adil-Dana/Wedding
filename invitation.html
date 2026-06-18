@@ -17,7 +17,9 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             background-color: var(--bg-color);
             color: var(--text-light);
@@ -391,7 +393,7 @@
             const container = document.getElementById('envelope-container');
             const mainContent = document.getElementById('main-content');
 
-            // Кладем клапан назад, вытаскиваем письмо
+            // Расскрываем конверт и достаем письмо
             envelope.classList.add('open');
 
             // Через 1.5 секунды, когда письмо выехало, растворяем весь preloader экран
@@ -405,10 +407,36 @@
                     mainContent.style.opacity = '1';
                     document.querySelector('.hero-section').classList.add('visible');
                     playMusic(); // Музыка запускается автоматически!
+                    startAutoScroll();
                 }, 1000);
             }, 1600);
         }
+function startAutoScroll() {
+            // Задержка 3 секунды, чтобы гость успел рассмотреть первый экран
+            setTimeout(() => {
+                const scrollSpeed = 1; // Скорость: чем больше цифра, тем быстрее бежит экран
+                
+                const scrollInterval = setInterval(() => {
+                    // Прокручиваем страницу на 1 пиксель вниз
+                    window.scrollBy(0, scrollSpeed);
+                    
+                    // Если гость сам коснулся экрана (крутанул пальцем), останавливаем автоскролл
+                    // чтобы не мешать ему читать в его темпе
+                    window.addEventListener('touchstart', () => {
+                        clearInterval(scrollInterval);
+                    }, { once: true });
+                    
+                    window.addEventListener('wheel', () => {
+                        clearInterval(scrollInterval);
+                    }, { once: true });
 
+                    // Если дошли до самого низа страницы — останавливаемся
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                        clearInterval(scrollInterval);
+                    }
+                }, 30); // Интервал обновления (30 миллисекунд для плавной картинки)
+            }, 3000); 
+        }
         // МУЗЫКАЛЬНЫЙ ПЛЕЕР
         const music = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
