@@ -4,25 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Қыз Ұзату | Дана</title>
-    <!-- Подключение элегантных шрифтов -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #0b291b; /* Глубокий изумрудный */
-            --gold: #d4af37;     /* Благородное золото */
+            --bg-color: #0b291b;
+            --gold: #d4af37;
             --gold-light: #f3e5ab;
             --text-light: #ffffff;
             --text-muted: #e0e0e0;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-color);
@@ -32,13 +27,13 @@
             line-height: 1.6;
         }
 
-        /* Декоративные казахские узоры по углам (SVG) */
+        /* Угловые орнаменты */
         .ornament-corner {
             position: fixed;
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             z-index: 10;
-            opacity: 0.6;
+            opacity: 0.5;
             pointer-events: none;
         }
         .top-left { top: 15px; left: 15px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
@@ -46,7 +41,6 @@
         .bottom-left { bottom: 15px; left: 15px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
         .bottom-right { bottom: 15px; right: 15px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
 
-        /* Элемент казахского узора в виде линии */
         .pattern-divider {
             display: flex;
             justify-content: center;
@@ -54,73 +48,112 @@
             margin: 20px auto;
             width: 150px;
         }
-        .pattern-divider svg {
-            fill: var(--gold);
-            width: 100%;
-            height: auto;
-        }
+        .pattern-divider svg { fill: var(--gold); width: 100%; height: auto; }
 
-        /* Общие стили секций */
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 60px 25px;
+            padding: 50px 25px;
             text-align: center;
             position: relative;
         }
 
-        /* Анимация плавного появления */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 1s ease, transform 1s ease;
         }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ВЕРХНЯЯ ПАНЕЛЬ: Переключатель языка */
+        .top-controls {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--gold);
+            color: var(--text-light);
+            padding: 6px 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        .lang-btn:hover {
+            background: var(--gold);
+            color: #000;
         }
 
-        /* Секция 1: Главный экран */
+        /* ФИКСИРОВАННАЯ КНОПКА МУЗЫКИ */
+        .music-control {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+            background: rgba(11, 41, 27, 0.85);
+            border: 2px solid var(--gold);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            animation: pulse 2s infinite;
+        }
+        .music-control svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--gold);
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+        .music-on { animation: spin 4s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Главный экран */
         .hero-section {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            padding: 80px 20px 40px 20px;
         }
-
         .hero-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 4px;
             color: var(--gold);
             margin-bottom: 15px;
-            font-weight: 400;
         }
-
         .hero-title {
             font-family: 'Cormorant Garamond', serif;
             font-size: 4rem;
             font-weight: 300;
             font-style: italic;
-            line-height: 1.1;
             margin-bottom: 25px;
-            color: var(--text-light);
-            text-shadow: 0px 4px 10px rgba(0,0,0,0.3);
         }
-
         .hero-date {
             font-size: 1.1rem;
             letter-spacing: 2px;
             border-top: 1px solid var(--gold);
             border-bottom: 1px solid var(--gold);
-            padding: 10px 30px;
-            display: inline-block;
+            padding: 8px 30px;
             margin-top: 20px;
         }
 
-        /* Секция 2: Приглашение */
         .invitation-text {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.6rem;
@@ -128,40 +161,29 @@
             color: var(--text-muted);
             margin-bottom: 30px;
         }
-        
         .parents-names {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--gold);
-            letter-spacing: 1px;
-            margin-top: 15px;
             font-weight: 500;
+            margin-top: 10px;
         }
 
-        /* Секция 3: Таймер */
+        /* Таймер */
         .timer-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--gold);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
-
-        .countdown {
-            display: flex;
-            justify-content: space-around;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
+        .countdown { display: flex; justify-content: space-around; max-width: 400px; margin: 0 auto; }
         .countdown-item {
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 15px 10px;
-            border-radius: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            padding: 12px 5px;
+            border-radius: 6px;
             width: 75px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-
         .countdown-number {
             font-family: 'Cormorant Garamond', serif;
             font-size: 2rem;
@@ -169,264 +191,302 @@
             font-weight: 600;
             display: block;
         }
+        .countdown-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); }
 
-        .countdown-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-        }
-
-        /* Секция 4: Детали (Время и Место) */
+        /* Блок инфо и Карта */
         .details-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(212, 175, 55, 0.15);
             padding: 40px 20px;
             border-radius: 8px;
-            margin-top: 20px;
         }
-
-        .details-item {
-            margin-bottom: 35px;
-        }
-        .details-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .details-icon {
-            font-size: 1.5rem;
-            color: var(--gold);
-            margin-bottom: 10px;
-        }
-
-        .details-label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--gold);
-            margin-bottom: 5px;
-        }
-
-        .details-value {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-style: italic;
-        }
-
-        /* Секция 5: RSVP Форма */
-        .rsvp-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-width: 400px;
-            margin: 30px auto 0 auto;
-        }
-
-        .input-group {
-            text-align: left;
-        }
-
-        .input-group label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--gold);
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .rsvp-input {
-            width: 100%;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 4px;
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .rsvp-input:focus {
-            outline: none;
-            border-color: var(--gold);
-        }
-
-        .radio-container {
-            display: flex;
-            gap: 15px;
-            margin-top: 5px;
-        }
-
-        .radio-label {
-            display: flex;
+        .details-item { margin-bottom: 30px; }
+        .details-item:last-child { margin-bottom: 0; }
+        .details-icon { font-size: 1.6rem; margin-bottom: 5px; }
+        .details-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
+        .details-value { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; }
+        
+        .map-btn {
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-
-        .radio-label input {
-            accent-color: var(--gold);
-            width: 18px;
-            height: 18px;
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, #d4af37, #aa841b);
-            color: #000;
-            border: none;
-            padding: 16px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 8px 18px;
             border-radius: 4px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
             cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 15px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .map-btn:hover { background: var(--gold); color: #000; }
+
+        /* RSVP */
+        .rsvp-form { display: flex; flex-direction: column; gap: 20px; max-width: 400px; margin: 30px auto 0 auto; }
+        .input-group { text-align: left; }
+        .input-group label { font-size: 0.8rem; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 6px; }
+        .rsvp-input {
+            width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 4px; color: white; font-size: 1rem;
+        }
+        .rsvp-input:focus { outline: none; border-color: var(--gold); }
+        .radio-container { display: flex; gap: 10px; margin-top: 5px; align-items: center;}
+        .radio-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.95rem; }
+        .radio-label input { accent-color: var(--gold); width: 18px; height: 18px; }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #d4af37, #aa841b); color: #000; border: none;
+            padding: 16px; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+            border-radius: 4px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
-        }
-
-        /* Адаптивность для мобильных */
         @media (max-width: 480px) {
-            .hero-title { font-size: 3rem; }
-            .container { padding: 45px 20px; }
-            .countdown-item { width: 68px; padding: 12px 5px; }
-            .countdown-number { font-size: 1.7rem; }
+            .hero-title { font-size: 3.2rem; }
+            .countdown-item { width: 68px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Декоративные рамки по углам -->
-    <div class="ornament-corner top-left"></div>
-    <div class="ornament-corner top-right"></div>
-    <div class="ornament-corner bottom-left"></div>
-    <div class="ornament-corner bottom-right"></div>
+    <!-- Аудиоэлемент (Ссылка на нежную фоновую музыку, можно заменить на свою) -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
-    <!-- СЕКЦИЯ 1: Главная -->
+    <!-- Кнопка Музыки -->
+    <div class="music-control" id="musicBtn" onclick="toggleMusic()">
+        <svg id="musicIconPlay" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    </div>
+
+    <!-- Углы -->
+    <div class="ornament-corner top-left"></div><div class="ornament-corner top-right"></div>
+    <div class="ornament-corner bottom-left"></div><div class="ornament-corner bottom-right"></div>
+
+    <!-- Переключатель Языка -->
+    <div class="top-controls">
+        <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">Русский</button>
+    </div>
+
+    <!-- Главный Экран -->
     <section class="container hero-section">
-        <p class="hero-subtitle">Қыз Ұзату</p>
-        
-        <!-- Векторный национальный узор-разделитель -->
+        <p class="hero-subtitle" id="t-main-sub">Қыз Ұзату</p>
         <div class="pattern-divider">
             <svg viewBox="0 0 100 20">
                 <path d="M10,10 Q25,0 40,10 T70,10 T100,10 M40,10 Q50,20 60,10" fill="none" stroke="#d4af37" stroke-width="2"/>
                 <circle cx="50" cy="10" r="3" />
             </svg>
         </div>
-
         <h1 class="hero-title">Дана</h1>
-        
         <p class="hero-date">27.06.2026</p>
     </section>
 
-    <!-- СЕКЦИЯ 2: Приглашение -->
+    <!-- Текст приглашения -->
     <section class="container fade-in">
-        <p class="hero-subtitle">Құрметті қонақтар!</p>
-        <p class="invitation-text">
+        <p class="hero-subtitle" id="t-inv-dear">Құрметті қонақтар!</p>
+        <p class="invitation-text" id="t-inv-text">
             Аялап өсірген қызымыз Дананы қияға қондыру салтанатына арналған ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!
         </p>
-        <p class="hero-subtitle" style="font-size: 0.9rem; margin-top: 40px;">Той иелері:</p>
+        <p class="hero-subtitle" id="t-hosts" style="font-size: 0.85rem; margin-top: 40px;">Той иелері:</p>
         <p class="parents-names">Руслан - Елена</p>
     </section>
 
-    <!-- СЕКЦИЯ 3: Детали салтаната -->
+    <!-- Время и Место -->
     <section class="container fade-in">
         <div class="details-card">
             <div class="details-item">
                 <div class="details-icon">📅</div>
-                <p class="details-label">Күн парағы</p>
-                <p class="details-value">27 маусым 2026 жыл</p>
+                <p class="details-label" id="t-det-date-lbl">Күн парағы</p>
+                <p class="details-value" id="t-det-date-val">27 маусым 2026 жыл</p>
             </div>
             
             <div class="details-item">
                 <div class="details-icon">⏰</div>
-                <p class="details-label">Басталуы</p>
-                <p class="details-value">Сағат 16:00-де</p>
+                <p class="details-label" id="t-det-time-lbl">Басталуы</p>
+                <p class="details-value" id="t-det-time-val">Сағат 16:00-де</p>
             </div>
 
             <div class="details-item">
                 <div class="details-icon">📍</div>
-                <p class="details-label">Мекен-жайы</p>
-                <p class="details-value">Бастау ауылы</p>
+                <p class="details-label" id="t-det-loc-lbl">Мекен-жайы</p>
+                <p class="details-value" id="t-det-loc-val">Бастау ауылы</p>
+                <!-- Ссылка на карту (Замените URL на точную ссылку вашей локации, если нужно) -->
+                <a href="https://maps.google.com/?q=село+Бастау" target="_blank" class="map-btn" id="t-map-btn">
+                    🗺️ <span id="t-map-btn-txt">Картаны ашу</span>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- СЕКЦИЯ 4: Таймер -->
+    <!-- Таймер -->
     <section class="container fade-in">
-        <h2 class="timer-title">Салтанатқа дейін қалды:</h2>
+        <h2 class="timer-title" id="t-timer-title">Салтанатқа дейін қалды:</h2>
         <div class="countdown" id="countdown">
             <div class="countdown-item">
                 <span class="countdown-number" id="days">00</span>
-                <span class="countdown-label">Күн</span>
+                <span class="countdown-label" id="lbl-days">Күн</span>
             </div>
             <div class="countdown-item">
                 <span class="countdown-number" id="hours">00</span>
-                <span class="countdown-label">Сағат</span>
+                <span class="countdown-label" id="lbl-hours">Сағат</span>
             </div>
             <div class="countdown-item">
                 <span class="countdown-number" id="minutes">00</span>
-                <span class="countdown-label">Мнут</span>
+                <span class="countdown-label" id="lbl-mins">Мнут</span>
             </div>
             <div class="countdown-item">
                 <span class="countdown-number" id="seconds">00</span>
-                <span class="countdown-label">Секунд</span>
+                <span class="countdown-label" id="lbl-secs">Секунд</span>
             </div>
         </div>
     </section>
 
-    <!-- СЕКЦИЯ 5: RSVP Форма -->
-    <section class="container fade-in" style="padding-bottom: 100px;">
-        <p class="hero-subtitle">Тойға келетініңізді растауыңызды сұраймыз</p>
-        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Жауабыңыз тікелей WhatsApp-қа жолданады</p>
+    <!-- Форма RSVP -->
+    <section class="container fade-in" style="padding-bottom: 110px;">
+        <p class="hero-subtitle" id="t-rsvp-title">Тойға келетініңізді растауыңызды сұраймыз</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;" id="t-rsvp-sub">Жауабыңыз тікелей WhatsApp-қа жолданады</p>
         
         <form class="rsvp-form" id="rsvpForm">
             <div class="input-group">
-                <label for="guestName">Сіздің есіміңіз (Аты-жөніңіз)</label>
-                <input type="text" id="guestName" class="rsvp-input" placeholder="Есіміңізді жазыңыз..." required>
+                <label for="guestName" id="t-input-lbl">Сіздің есіміңіз (Аты-жөніңіз)</label>
+                <input type="text" id="guestName" class="rsvp-input" required>
             </div>
 
             <div class="input-group">
-                <label>Тойға келесіз бе?</label>
+                <label id="t-radio-main-lbl">Тойға келесіз бе?</label>
                 <div class="radio-container">
                     <label class="radio-label">
-                        <input type="radio" name="attendance" value="Келемін" checked>
-                        Өкінішке орай, келе алмаймын
+                        <input type="radio" name="attendance" value="yes" checked>
+                        <span id="t-radio-yes">Иә, келемін</span>
                     </label>
                 </div>
                 <div class="radio-container" style="margin-top: 10px;">
                     <label class="radio-label">
-                        <input type="radio" name="attendance" value="Келе алмаймын">
-                        Өкінішке орай, келе алмаймын
+                        <input type="radio" name="attendance" value="no">
+                        <span id="t-radio-no">Өкінішке орай, келе алмаймын</span>
                     </label>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">Жауапты жіберу</button>
+            <button type="submit" class="submit-btn" id="t-submit-btn">Жауапты жіберу</button>
         </form>
     </section>
 
     <script>
-        // --- 1. ТАЙМЕР ОБРАТНОГО ОТСЧЕТА ---
-        const targetDate = new Date('June 27, 2026 16:00:00').getTime();
+        // БАЗА ДАННЫХ ДЛЯ ДВУХ ЯЗЫКОВ
+        let currentLang = 'kk';
+        const langData = {
+            kk: {
+                langBtn: "Русский",
+                mainSub: "Қыз Ұзату",
+                invDear: "Құрметті қонақтар!",
+                invText: "Аялап өсірген қызымыз Дананы қияға қондыру салтанатына арналған ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!",
+                hosts: "Той иелері:",
+                detDateLbl: "Күн парағы",
+                detDateVal: "27 маусым 2026 жыл",
+                detTimeLbl: "Басталуы",
+                detTimeVal: "Сағат 16:00-де",
+                detLocLbl: "Мекен-жайы",
+                detLocVal: "Бастау ауылы",
+                mapBtn: "Картаны ашу",
+                timerTitle: "Салтанатқа дейін қалды:",
+                lblDays: "Күн", lblHours: "Сағат", lblMins: "Минут", lblSecs: "Секунд",
+                rsvpTitle: "Тойға келетініңізді растауыңызды сұраймыз",
+                rsvpSub: "Жауабыңыз тікелей WhatsApp-қа жолданады",
+                inputLbl: "Сіздің есіміңіз (Аты-жөніңіз)",
+                radioMainLbl: "Тойға келесіз бе?",
+                radioYes: "Иә, келемін",
+                radioNo: "Өкінішке орай, келе алмаймын",
+                submitBtn: "Жауапты жіберу"
+            },
+            ru: {
+                langBtn: "Қазақша",
+                mainSub: "Кыз Узату",
+                invDear: "Дорогие гости!",
+                invText: "Приглашаем вас стать почетными гостями праздничного дастархана, посвященного проводам нашей любимой дочери Даны!",
+                hosts: "Хозяева торжества:",
+                detDateLbl: "Дата",
+                detDateVal: "27 июня 2026 года",
+                detTimeLbl: "Время",
+                detTimeVal: "В 16:00 ч.",
+                detLocLbl: "Место проведения",
+                detLocVal: "село Бастау",
+                mapBtn: "Открыть карту",
+                timerTitle: "До торжества осталось:",
+                lblDays: "Дней", lblHours: "Часов", lblMins: "Минут", lblSecs: "Секунд",
+                rsvpTitle: "Пожалуйста, подтвердите ваше присутствие",
+                rsvpSub: "Ваш ответ будет отправлен напрямую в WhatsApp",
+                inputLbl: "Ваше имя и фамилия",
+                radioMainLbl: "Придете ли вы на торжество?",
+                radioYes: "Да, приду",
+                radioNo: "К сожалению, не смогу",
+                submitBtn: "Отправить ответ"
+            }
+        };
 
+        function toggleLanguage() {
+            currentLang = currentLang === 'kk' ? 'ru' : 'kk';
+            const data = langData[currentLang];
+            
+            document.getElementById('langBtn').innerText = data.langBtn;
+            document.getElementById('t-main-sub').innerText = data.mainSub;
+            document.getElementById('t-inv-dear').innerText = data.invDear;
+            document.getElementById('t-inv-text').innerText = data.invText;
+            document.getElementById('t-hosts').innerText = data.hosts;
+            document.getElementById('t-det-date-lbl').innerText = data.detDateLbl;
+            document.getElementById('t-det-date-val').innerText = data.detDateVal;
+            document.getElementById('t-det-time-lbl').innerText = data.detTimeLbl;
+            document.getElementById('t-det-time-val').innerText = data.detTimeVal;
+            document.getElementById('t-det-loc-lbl').innerText = data.detLocLbl;
+            document.getElementById('t-det-loc-val').innerText = data.detLocVal;
+            document.getElementById('t-map-btn-txt').innerText = data.mapBtn;
+            document.getElementById('t-timer-title').innerText = data.timerTitle;
+            document.getElementById('lbl-days').innerText = data.lblDays;
+            document.getElementById('lbl-hours').innerText = data.lblHours;
+            document.getElementById('lbl-mins').innerText = data.lblMins;
+            document.getElementById('lbl-secs').innerText = data.lblSecs;
+            document.getElementById('t-rsvp-title').innerText = data.rsvpTitle;
+            document.getElementById('t-rsvp-sub').innerText = data.rsvpSub;
+            document.getElementById('t-input-lbl').innerText = data.inputLbl;
+            document.getElementById('t-radio-main-lbl').innerText = data.radioMainLbl;
+            document.getElementById('t-radio-yes').innerText = data.radioYes;
+            document.getElementById('t-radio-no').innerText = data.radioNo;
+            document.getElementById('t-submit-btn').innerText = data.submitBtn;
+        }
+
+        // ПЛЕЕР МУЗЫКИ
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicBtn.classList.remove('music-on');
+            } else {
+                music.play().catch(e => console.log("Музыка начнет играть после первого взаимодействия."));
+                musicBtn.classList.add('music-on');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Автозапуск музыки при первом клике на экран (требование современных браузеров)
+        document.body.addEventListener('click', function() {
+            if(!isPlaying) {
+                music.play().catch(()=>{});
+                musicBtn.classList.add('music-on');
+                isPlaying = true;
+            }
+        }, { once: true });
+
+        // ТАЙМЕР
+        const targetDate = new Date('June 27, 2026 16:00:00').getTime();
         function updateTimer() {
             const now = new Date().getTime();
             const difference = targetDate - now;
-
-            if (difference < 0) {
-                document.getElementById('countdown').innerHTML = "<p style='color: var(--gold); font-size: 1.2rem;'>Салтанат басталды!</p>";
-                return;
-            }
+            if (difference < 0) { return; }
 
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -441,48 +501,39 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-
-        // --- 2. АНИМАЦИЯ ПОЯВЛЕНИЯ ЭЛЕМЕНТОВ ПРИ СКРОЛЛЕ ---
+        // СКРОЛЛ-АНИМАЦИЯ
         const fadeElements = document.querySelectorAll('.fade-in');
-        
-        const observerOptions = {
-            root: null,
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
-
+        }, { threshold: 0.1 });
         fadeElements.forEach(el => observer.observe(el));
 
-
-        // --- 3. ИНТЕГРАЦИЯ RSVP ФОРМЫ С WHATSAPP ---
+        // RSVP НА WHATSAPP
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // ВАЖНО: Замените номер ниже на свой (в международном формате, без плюса)
+            // ВАЖНО: Укажите ваш номер телефона без знака плюс!
             const phoneNumber = "77071234567"; 
             
             const name = document.getElementById('guestName').value;
             const attendance = document.querySelector('input[name="attendance"]:checked').value;
             
-            // Формируем красивый текст сообщения
-            let text = `Сәлеметсіз бе! %0A%0AҚыз ұзату шақыруына жауап:%0A`;
-            text += `*Қонақ:* ${name}%0A`;
-            text += `*Жауап:* ${attendance === 'Келемін' ? '✅ Тойға қуанышты болып КЕЛЕМІН!' : '❌ Өкінішке орай, КЕЛЕ АЛМАЙМЫН.'}`;
+            let text = "";
+            if(currentLang === 'kk') {
+                text = `Сәлеметсіз бе! %0A%0AҚыз ұзату шақыруына жауап:%0A`;
+                text += `*Қонақ:* ${name}%0A`;
+                text += `*Жауап:* ${attendance === 'yes' ? '✅ Тойға қуанышты болып КЕЛЕМІН!' : '❌ Өкінішке орай, КЕЛЕ АЛМАЙМЫН.'}`;
+            } else {
+                text = `Здравствуйте! %0A%0AОтвет на приглашение Кыз узату:%0A`;
+                text += `*Гость:* ${name}%0A`;
+                text += `*Ответ:* ${attendance === 'yes' ? '✅ С радостью ПРИДУ!' : '❌ К сожалению, НЕ СМОГУ присутствовать.'}`;
+            }
             
-            // Ссылка для открытия WhatsApp
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${text}`;
-            
-            // Открываем WhatsApp в новой вкладке
-            window.open(whatsappUrl, '_blank');
+            window.open(`https://api.whatsapp.com/send?phone=${phoneNumber}&text=${text}`, '_blank');
         });
     </script>
 </body>
