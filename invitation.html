@@ -111,19 +111,28 @@
         .letter-inside p { font-size: 0.75rem; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; margin-top: 5px; }
 
         /* Сургучная печать / Кнопка штампа */
+        /* СУРГУЧНАЯ ПЕЧАТЬ С ВАШЕЙ КАРТИНКОЙ */
         .wax-seal {
             position: absolute;
             top: 95px; left: 50%; transform: translateX(-50%);
-            width: 44px; height: 44px;
+            width: 46px; height: 46px;
             background: radial-gradient(#e6c253, #b89218);
             border-radius: 50%;
             z-index: 6;
             box-shadow: 0 4px 10px rgba(0,0,0,0.4), inset 0 0 4px rgba(0,0,0,0.5);
             display: flex; justify-content: center; align-items: center;
-            font-size: 0.7rem; font-weight: bold; color: #3d2f02;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease, opacity 0.3s ease;
+            padding: 8px; /* Небольшой отступ, чтобы картинка не упиралась в края */
         }
-        .wax-seal::after { content: "AD"; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; }
+
+        /* Стилизация самой картинки внутри печати */
+        .wax-seal img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Эффект легкого тиснения, чтобы картинка сливалась с сургучом */
+            filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3)); 
+        }
 
         /* Кнопка снизу для полной уверенности клика */
         .env-open-text-btn {
@@ -263,7 +272,9 @@
                 <h3>Dana</h3>
                 <p>Қыз Ұзату</p>
             </div>
-            <div class="wax-seal"></div>
+            <div class="wax-seal">
+    <img src="AD_init.png" alt="Инициалы">
+</div>
         </div>
         <button class="env-open-text-btn" id="t-open-hint" onclick="openEnvelopeAnimation()">Ашу / Открыть</button>
     </div>
