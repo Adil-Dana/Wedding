@@ -365,7 +365,13 @@
                 <div class="input-group">
                     <label id="t-radio-main-lbl">Тойға келесіз бе?</label>
                     <div class="radio-container">
-                        <label class="radio-label"><input type="radio" name="attendance" value="yes" checked><span id="t-radio-yes">Иә, келемін</span></label>
+                        <label class="radio-label"><input type="radio" name="attendance" value="yes" checked><span id="t-radio-yes">Иә, жалғыз келемін</span></label>
+                    </div>
+                    <div class="radio-container" style="margin-top: 10px;">
+                        <label class="radio-label">
+                            <input type="radio" name="attendance" value="couple">
+                            <span id="t-radio-couple">Жұбайыммен келемін</span>
+                        </label>
                     </div>
                     <div class="radio-container" style="margin-top: 10px;">
                         <label class="radio-label"><input type="radio" name="attendance" value="no"><span id="t-radio-no">Өкінішке орай, келе алмаймын</span></label>
@@ -461,7 +467,7 @@
                 lblDays: "Күн", lblHours: "Сағат", lblMins: "Минут", lblSecs: "Секунд",
                 rsvpTitle: "Тойға келетініңізді растауыңызды сұраймыз", rsvpSub: "Жауабыңыз тікелей WhatsApp-қа жолданады",
                 inputLbl: "Сіздің есіміңіз (Аты-жөніңіз)", radioMainLbl: "Тойға келесіз бе?",
-                radioYes: "Иә, келемін", radioNo: "Өкінішке орай, келе алмаймын", submitBtn: "Жауапты жіберу"
+                radioYes: "Иә, келемін", radioCouple: "Жұбайыммен келемін", radioNo: "Өкінішке орай, келе алмаймын", submitBtn: "Жауапты жіберу"
             },
             ru: {
                 langBtn: "Қазақша", mainSub: "Свадьба", invDear: "Дорогие родные и друзья!",
@@ -472,7 +478,7 @@
                 lblDays: "Дней", lblHours: "Часов", lblMins: "Минут", lblSecs: "Секунд",
                 rsvpTitle: "Пожалуйста, подтвердите ваше присутствие", rsvpSub: "Ваш ответ будет отправлен напрямую в WhatsApp",
                 inputLbl: "Ваше имя и фамилия", radioMainLbl: "Придете ли вы на торжество?",
-                radioYes: "Да, приду", radioNo: "К сожалению, не смогу", submitBtn: "Отправить ответ"
+                radioYes: "Да, приду", radioCouple: "Буду с супругом(ой)", radioNo: "К сожалению, не смогу", submitBtn: "Отправить ответ"
             }
         };
 
@@ -501,6 +507,7 @@
             document.getElementById('t-input-lbl').innerText = data.inputLbl;
             document.getElementById('t-radio-main-lbl').innerText = data.radioMainLbl;
             document.getElementById('t-radio-yes').innerText = data.radioYes;
+            document.getElementById('t-radio-couple').innerText = data.radioCouple;
             document.getElementById('t-radio-no').innerText = data.radioNo;
             document.getElementById('t-submit-btn').innerText = data.submitBtn;
         }
@@ -531,16 +538,25 @@
         fadeElements.forEach(el => observer.observe(el));
 
         // ИНТЕГРАЦИЯ RSVP С WHATSAPP
-        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+       document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const phoneNumber = "+77774984504";
             const name = document.getElementById('guestName').value;
             const attendance = document.querySelector('input[name="attendance"]:checked').value;
-            let text = "";
-            if(currentLang === 'kk') {
-                text = `Сәлеметсіз бе! %0A%0AҮйлену той шақыруына жауап:%0A*Қонақ:* ${name}%0A*Жауап:* ${attendance === 'yes' ? '✅ КЕЛЕМІН!' : '❌ КЕЛЕ АЛМАЙМЫН.'}`;
+            
+            let statusText = "";
+            if (currentLang === 'kk') {
+                if (attendance === 'yes') statusText = '✅ ЖАЛҒЫЗ КЕЛЕМІН!';
+                else if (attendance === 'couple') statusText = '👩‍❤️‍👨 ЖҰБАЙЫММЕН КЕЛЕМІН!';
+                else statusText = '❌ КЕЛЕ АЛМАЙМЫН.';
+                
+                text = `Сәлеметсіз бе! %0A%0AҮйлену той шақыруына жауап:%0A*Қонақ:* ${name}%0A*Жауап:* ${statusText}`;
             } else {
-                text = `Здравствуйте! %0A%0AОтвет на приглашение на свадьбу:%0A*Гость:* ${name}%0A*Ответ:* ${attendance === 'yes' ? '✅ ПРИДУ!' : '❌ НЕ СМОГУ.'}`;
+                if (attendance === 'yes') statusText = '✅ Приду один(а)';
+                else if (attendance === 'couple') statusText = '👩‍❤️‍👨 БУДУ С СУПРУГОМ(ОЙ)!';
+                else statusText = '❌ Не смогу прийти';
+                
+                text = `Здравствуйте! %0A%0AОтвет на приглашение на свадьбу:%0A*Гость:* ${name}%0A*Ответ:* ${statusText}`;
             }
             window.open(`https://api.whatsapp.com/send?phone=${phoneNumber}&text=${text}`, '_blank');
         });
